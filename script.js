@@ -1,9 +1,9 @@
 
 var width = 960,
-    barHeight = 500;
+	height = 500;
 
 var y = d3.scaleLinear()
-    .range([height, 0]);
+	.range([height, 0]);
 
 var chart = d3.select(".chart")
 	.attr("width", width)
@@ -11,7 +11,7 @@ var chart = d3.select(".chart")
 
 d3.csv("tweets.csv", type, function(error, data) {
 	y.domain([0, d3.max(data, function(d) { return d.tweet_id; })]);
-  
+
 	var barWidth = width / data.length;
 
 	var bar = chart.selectAll("g")
@@ -32,6 +32,6 @@ d3.csv("tweets.csv", type, function(error, data) {
 });
 
 function type(d) {
-	d.tweet_id = +d.tweet_id; 
+	d.tweet_id = +d.tweet_id; // coerce to number
 	return d;
 }
