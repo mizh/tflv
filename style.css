@@ -18,7 +18,46 @@ body {
 
 .chart text {
   fill: white;
-  font: 10px sans-serif;
-  text-anchor: end;
+  font: 20px sans-serif;
+  text-anchor: center;
 }
 
+
+.bar {
+  fill: steelblue;
+}
+
+.axis text {
+  fill: black;
+  font: 20px sans-serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: lightblue;
+  shape-rendering: crispEdges;
+}
+
+.x.axis text {
+  fill: black;
+  font: 20px sans-serif;
+}
+
+.x.axis path,
+.x.axis line {
+  fill: none;
+  shape-rendering: crispEdges;
+}
+
+.y.axis text {
+  fill: yellow;
+  font: 20px sans-serif;
+}
+
+.y.axis path,
+.y.axis line {
+  fill: none;
+  stroke: white;
+  shape-rendering: crispEdges;
+}
