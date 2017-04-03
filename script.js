@@ -1,11 +1,13 @@
-var width = 420,
+var margin = {right: 300};
+
+var width = 960 - margin.right,
     barHeight = 20;
 
 var x = d3.scaleLinear()
     .range([0, width]);
 
 var chart = d3.select(".chart")
-    .attr("width", width);
+    .attr("width", width + margin.right);
 
 d3.csv("tweets.csv", row, function(error, data) {
   x.domain([0, d3.max(data, function(d) { return d.tweet_id; })]);
@@ -22,17 +24,20 @@ d3.csv("tweets.csv", row, function(error, data) {
       .attr("height", barHeight - 1);
 
   bar.append("text")
-      .attr("x", function(d) { return x(d.tweet_id) - 290; })
+      .attr("x", function(d) { return x(d.tweet_id); })
+      .style("text-anchor", "end")
       .attr("y", barHeight / 2)
       .attr("dy", ".35em")
-      .text(function(d) { return d.timestamp; });
+      .text(function(d) { return d.day; });
 });
 
-var parseDate = d3.timeParse("%Y-%m-%d %H:%M:%S %Z");
+var parseDate = d3.timeParse("%Y-%m-%d %H:%M:%S %Z"),
+	formatDay = d3.timeFormat("%m-%d-%Y"),
+	formatYear = d3.timeFormat("%Y");
 
 function row(d) {
   return {
-  timestamp: parseDate(d.timestamp),
+  day: formatDay(parseDate(d.timestamp)),
   tweet_id: +d.tweet_id 
 };
 }
