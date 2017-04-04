@@ -12,6 +12,7 @@ var chart = d3.select(".chart")
     .attr("width", width + margin.right);
     
 var currDay = +"00000000";
+dayI = -1;
 
 d3.csv("tweets.csv", row, function(error, data) {
 
@@ -37,8 +38,8 @@ d3.csv("tweets.csv", row, function(error, data) {
   var dots = chart.selectAll("circle")
   	  .data(data)
   	.enter().append("circle")
-  	  .filter(function(d) { return newDay(d.day); })
-      .attr("transform", function(d, i) { return "translate(0," + i * barHeight + ")"; })
+  	  //.filter(function(d) { return dayIndex(d.day); })
+      .attr("transform", function(d) { return "translate(0," + newDayIndex(d.day) * barHeight + ")"; })
   	  .attr("cx", function (d) { return t(d.moment); })
       .attr("cy", barHeight / 2)
   	  .attr("r", 5);
@@ -67,4 +68,12 @@ function newDay(day) {
     currDay = day;
     return true }
   else { return false };
+}
+
+function newDayIndex(day) {
+  if (day != currDay) {
+    currDay = day;
+    dayI = dayI + 1;
+    return dayI }
+  else { return dayI };
 }
