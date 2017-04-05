@@ -1,22 +1,28 @@
-var margin = {right: 400};
+var margin = {top:50, left:600, right: 600};
 
-var width = 960 - margin.right,
+var width = 2000 - margin.right - margin.left,
 	barWidth = 600;
-    barHeight = 100;
+	barHeight = 100;
 
 var t = d3.scaleTime()
 	.domain([new Date(1999,12,31,0,0,0), new Date(1999,12,31,23,59,59)])
 	.range([0, barWidth]);
 
+
 var chart = d3.select(".chart")
-	.attr("width", width + margin.right);
+	.attr("width", width + margin.right + margin.left);
+
+    
+var tip = d3.tip()
+      .attr("class", "d3-tip")
+      .offset([-8, 0])
+      .html(function(d) { return d.text; });
+    chart.call(tip);
     
 var currDay = +"00000000";
 dayI = -1;
 
 d3.csv("tweets.csv", row, function(error, data) {
-
-	chart.attr("height", barHeight * data.length);
 
 	var bar = chart.selectAll("g")
 		.data(data)
@@ -43,13 +49,16 @@ d3.csv("tweets.csv", row, function(error, data) {
 		.attr("cy", barHeight / 2)
 		.attr("r", 5)
 		.on("mouseover", function(d) {
+			tip.show(d);
 			d3.select(this).attr("r", 10).style("fill", "red");
 		})                  
 		.on("mouseout", function(d) {
+			tip.hide(d);
 			d3.select(this).attr("r", 5).style("fill", "black");
-		})
-		.append("svg:title")
-		.text(function(d) { return d.text });
+		});
+		
+		chart.attr("height", barHeight * dayI - margin.top) 
+		.attr("transform", "translate(" + margin.left + "," + margin.top + ")"); 
   	  
 });
 
@@ -69,6 +78,10 @@ function row(d) {
 		tweet_id: +d.tweet_id,
 		text: cleanText(d.text)
 		};
+}
+
+function countUniqueDays(data) {
+
 }
 
 function newDay(day) {
@@ -92,4 +105,8 @@ function cleanText(text) {
 	text = text.replace(re, '');
 	text = text.replace(/&amp;/g, '&');
 	return text
+}
+
+function isNotReply(text) {
+	return !text.includes("@")
 }
