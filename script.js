@@ -8,22 +8,19 @@ var t = d3.scaleTime()
 	.domain([new Date(1999,12,31,0,0,0), new Date(1999,12,31,23,59,59)])
 	.range([0, barWidth]);
 
-
 var chart = d3.select(".chart")
 	.attr("width", width + margin.right + margin.left);
 
-    
 var tip = d3.tip()
-      .attr("class", "d3-tip")
-      .offset([-8, 0])
-      .html(function(d) { return d.text; });
-    chart.call(tip);
-    
+	.attr("class", "d3-tip")
+	.offset([-8, 0])
+	.html(function(d) { return d.text; });
+chart.call(tip);
+
 var currDay = +"00000000";
 dayI = -1;
 
 d3.csv("tweets.csv", row, function(error, data) {
-
 	var bar = chart.selectAll("g")
 		.data(data)
 	.enter().append("g")
@@ -58,8 +55,7 @@ d3.csv("tweets.csv", row, function(error, data) {
 		});
 		
 		chart.attr("height", barHeight * dayI - margin.top) 
-		.attr("transform", "translate(" + margin.left + "," + margin.top + ")"); 
-  	  
+		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 });
 
 var parseDate = d3.timeParse("%Y-%m-%d %H:%M:%S %Z"),
@@ -78,10 +74,6 @@ function row(d) {
 		tweet_id: +d.tweet_id,
 		text: cleanText(d.text)
 		};
-}
-
-function countUniqueDays(data) {
-
 }
 
 function newDay(day) {
