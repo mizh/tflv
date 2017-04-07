@@ -1,4 +1,4 @@
-var margin = {top:50, left:600, right: 600};
+var margin = {top:50, bottom:50, left:600, right: 600};
 
 var width = 2000 - margin.right - margin.left,
 	barWidth = 600;
@@ -14,10 +14,10 @@ var chart = d3.select(".chart")
 var tip = d3.tip()
 	.attr("class", "d3-tip")
 	.offset([-8, 0])
-	.html(function(d) { return d.text; });
+	.html(function(d) { return d; });
 chart.call(tip);
 
-var currDay = +"00000000";
+var currDay = +"00000000",
 dayI = -1;
 
 d3.csv("tweets.csv", row, function(error, data) {
@@ -36,7 +36,7 @@ d3.csv("tweets.csv", row, function(error, data) {
 		.style("text-anchor", "start")
 		.attr("y", barHeight / 2)
 		.attr("dy", ".35em")
-		.text(function(d) { return d.prettyDay; });
+		.text(function(d) { return wrap(d.prettyDay.toString(), 25, 'X', false); });
       
 	var dots = chart.selectAll("circle")
 		.data(data)
@@ -46,15 +46,15 @@ d3.csv("tweets.csv", row, function(error, data) {
 		.attr("cy", barHeight / 2)
 		.attr("r", 5)
 		.on("mouseover", function(d) {
-			tip.show(d);
+			tip.show(wrap(d.text, 30, "<br>", false));
 			d3.select(this).attr("r", 10).style("fill", "red");
 		})                  
 		.on("mouseout", function(d) {
-			tip.hide(d);
+			tip.hide(d.text);
 			d3.select(this).attr("r", 5).style("fill", "black");
 		});
 		
-		chart.attr("height", barHeight * dayI - margin.top) 
+		chart.attr("height", barHeight * (dayI+1) + margin.top + margin.bottom) 
 		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 });
 
@@ -99,6 +99,11 @@ function cleanText(text) {
 	return text
 }
 
-function isNotReply(text) {
-	return !text.includes("@")
+function wrap( str, width, brk, cut ) {
+	brk = brk || 'n';
+	width = width || 75;
+	cut = cut || false;
+	if (!str) { return str; }
+	var regex = '.{1,' +width+ '}(\\s|$)';
+	return str.match( RegExp(regex, 'g') ).join( brk );
 }
