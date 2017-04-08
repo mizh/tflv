@@ -1,9 +1,9 @@
 body {
-    background-color: lightblue;
+    background-color: #eee;
     font-size: 48px;
 }
 
-.chart div {
+div.chart {
   font: 10px sans-serif;
   background-color: steelblue;
   text-align: right;
@@ -12,52 +12,55 @@ body {
   color: white;
 }
 
-.chart rect {
-  fill: steelblue;
+.chart line {
+  stroke: #aaa;
+  stroke-width: 1;
+  shape-rendering: geometricPrecision;
 }
 
 .chart text {
-  fill: white;
-  font: 20px sans-serif;
+  fill: black;
+  font: 18px sans-serif;
   text-anchor: center;
 }
 
-
-.bar {
-  fill: steelblue;
-}
-
 .axis text {
-  fill: black;
-  font: 20px sans-serif;
+  fill: #black;
+  font: 12px sans-serif;
 }
 
 .axis path,
 .axis line {
   fill: none;
-  stroke: lightblue;
+  stroke: #aaa;
   shape-rendering: crispEdges;
 }
 
-.x.axis text {
-  fill: black;
-  font: 20px sans-serif;
-}
 
-.x.axis path,
-.x.axis line {
-  fill: none;
-  shape-rendering: crispEdges;
+.d3-tip {
+      line-height: 1;
+      padding: 6px;
+      background: rgba(0, 0, 0, 0.8);
+      color: #fff;
+      border-radius: 4px;
+      font: 18px sans-serif;
+      word-wrap: break-word;
 }
-
-.y.axis text {
-  fill: yellow;
-  font: 20px sans-serif;
+    
+.d3-tip:after {
+      box-sizing: border-box;
+      display: inline;
+      font-size: 10px;
+      width: 100%;
+      line-height: 1;
+      color: rgba(0, 0, 0, 0.8);
+      content: "\25BC";
+      position: absolute;
+      text-align: center;
 }
-
-.y.axis path,
-.y.axis line {
-  fill: none;
-  stroke: white;
-  shape-rendering: crispEdges;
+    
+.d3-tip.n:after {
+      margin: -2px 0 0 0;
+      top: 100%;
+      left: 0;
 }
