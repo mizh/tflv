@@ -5,7 +5,9 @@ var width = 1600 - margin.right - margin.left,
 	barHeight = 80,
 	dotRadius = 4.7,
 	dotOffset = 5,
-	bigDotRadius = dotRadius * 1.5;
+	bigDotRadius = dotRadius * 1.5,
+	buttonWidth = 160,
+	buttonHeight = 40;
 
 var chart = d3.select(".chart")
 	.attr("width", width + margin.right + margin.left);
@@ -30,7 +32,8 @@ chart.call(tip);
 
 var currDay = +"00000000",
 dayI = -1;
-nDays = -1;
+nDays = 0;
+bN = 0;
 
 d3.csv("tweets_clean.csv", row, function(error, data) {
 	var bars = chart.selectAll("bar")
@@ -52,10 +55,10 @@ d3.csv("tweets_clean.csv", row, function(error, data) {
 		.attr("dy", ".35em")
 		.text(function(d) { return d.prettyDay; });
 		
-	chart.attr("height", barHeight * (nDays+1) + margin.top + margin.bottom) 
+	chart.attr("height", barHeight * nDays + margin.top + margin.bottom) 
 		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 		
-	mainAxis.tickSizeInner(-barHeight * (nDays+1) + barHeight/2 - 20);
+	mainAxis.tickSizeInner(-barHeight * nDays);
 	chart.append("g")
 		.attr("class", "axis")
 		.call(mainAxis);
@@ -85,17 +88,56 @@ d3.csv("tweets_clean.csv", row, function(error, data) {
 		.on("mouseout", function(d) {
 			tip.hide(d.text);
 		});
+		
+	newButton("coffee", "coffee", "yellow", "#bbb");
+	newButton("tea", "tea", "chartreuse", "#ccc");
+	newButton("juice", "orange juice", "cyan", "#bbb");
+	newButton("alcohol", "wine|beer", "yellow", "#ccc");
+	
+	newButton("bread", "bread|toast", "yellow", "#bbb");
+	newButton("beans", "bean|chickpea", "yellow", "#ccc");
+	newButton("lentils", "lentil", "yellow", "#bbb");
+	newButton("quinoa", "quinoa", "yellow", "#ccc");
+	
+	
+	newButton("margarine", "margarine", "yellow", "#bbb");
+	newButton("peanut butter", "peanut butter", "yellow", "#ccc");
+	newButton("jam", "jam", "yellow", "#bbb");
+	newButton("hummus", "hummus", "yellow", "#ccc");
+	
+	newButton("cheese", "cheese|cheddar", "yellow", "#bbb");
+	newButton("yogurt", "yogurt", "yellow", "#ccc");
+	newButton("cream", "cream|half&half", "yellow", "#bbb");
+	
+	newButton("buckwheat", "buckwheat", "yellow", "#ccc");
+	newButton("chia seeds", "chia", "yellow", "#bbb");
+	newButton("hemp hearts", "chia", "yellow", "#ccc");
+	newButton("almonds", "almond", "yellow", "#bbb");
+	newButton("chocolate", "chocolate", "yellow", "#ccc");
+	newButton("fries", "fries", "yellow", "#bbb");
+	newButton("chips", "chip", "yellow", "#ccc");
+	newButton("cookies", "cookie", "yellow", "#bbb");
+	
+	newButton("apples", "apple", "yellow", "#ccc");
+	newButton("bananas", "banana", "yellow", "#bbb");
+	newButton("strawberries", "strawberr", "yellow", "#ccc");
+	newButton("kiwifruit", "kiwi", "yellow", "#bbb");
+	newButton("mango", "mango", "yellow", "#ccc");
+	newButton("watermelon", "watermelon", "yellow", "#bbb");
+	newButton("grapefruit", "grapefruit", "yellow", "#ccc");	
+	
+	newButton("dates", "date", "yellow", "#bbb");	
+	newButton("candied ginger", "ginger", "yellow", "#ccc");
+	newButton("avocado", "avocado", "yellow", "#bbb");
+	
+	newButton("tomatoes", "tomato", "yellow", "#ccc");
+	newButton("olives", "olive", "yellow", "#bbb");
+	newButton("carrots", "carrot", "yellow", "#ccc");
+	newButton("peas", " pea", "yellow", "#bbb");
+	newButton("leafy greens", "spinach|kale|cabbage|lettuce|seaweed|laver|cilantro", "yellow", "#ccc");
+	
+	
 
-	d3.select("#buttons")
-		.append("button")
-		.text("coffee")
-    	.on("click", function(d) { highlight(d, "coffee") });
-
-	d3.select("#buttons")
-		.append("button")
-		.text("cheese")
-    	.on("click", function(d) { highlight(d, "cheddar|cheese") });
-    	
 });
 
 var parseDate = d3.timeParse("%Y-%m-%d %H:%M:%S %Z"),
@@ -149,36 +191,55 @@ function wrap( str, width, brk, cut ) {
 	return str.match( RegExp(regex, 'g') ).join( brk );
 }
 
-function foodColor(text) {
-	if (text.match(/coffee/i)) {
-	return "saddlebrown" }
-	else if (text.match(/tea/i)) {
-	return "darkkhaki" }
-	else if (text.match(/toast|bean|lentil|quinoa/i)) {
-	return "peru" }
-	else if (text.match(/cheese|cheddar|yogurt/i)) {
-	return "yellow" }
-	else if (text.match(/almond|chia|date/i)) {
-	return "steelblue" }
-	else if (text.match(/orange juice/i)) {
-	return "darkorange" }
-	else if (text.match(/banana|apple|kiwi|mango|avocado|watermelon|strawberr|fruit/i)) {
-	return "mediumvioletred" }
-	else if (text.match(/tomato|onion|seaweed|laver|olive|pea|salad/i)) {
-	return "seagreen" }
-	else if (text.match(/chocolate|ginger/i)) {
-	return "hotpink" }
-	else {
-	return "black"
-	};
-}
-
-function highlight(d, str) {
+function highlight(d, str, color) {
 	re = new RegExp(str, "i");
 	d3.selectAll(".dot")
-		.style("fill","black")
-		.attr("r", dotRadius)
 		.filter(function(d) { return d.text.match(re); })
-		.style("fill","yellow")
+		.style("fill",color)
 		.attr("r", bigDotRadius);
+}
+
+function unhighlight(d, str) {
+	re = new RegExp(str, "i");
+	d3.selectAll(".dot")
+		.filter(function(d) { return d.text.match(re); })
+		.style("fill","black")
+		.attr("r", dotRadius);
+}
+
+function newButton(label, regex_string, color, buttonColor) {
+	chart.append("rect")
+		.datum(false)
+		.attr("transform", "translate(" + (barWidth+20) + "," + (bN*buttonHeight) +")")
+		.attr("width", buttonWidth)
+		.attr("height", buttonHeight)
+		.attr("rx",6)
+		.attr("ry",6)
+		.style("fill", buttonColor)
+		.on("mouseover", function(d) { d3.select(this).style("fill", color); }) 
+		.on("click", function(d) { 
+			if (!d3.select(this).datum()) {
+				highlight(d, regex_string, color); 
+				d3.select(this).datum(!d3.select(this).datum());
+			}
+			else {
+			unhighlight(d, regex_string);
+			d3.select(this).style("fill", color)
+				.datum(!d3.select(this).datum());
+			}
+		})
+		.on("mouseout", function(d) { 
+			if(!d3.select(this).datum()) { 
+				d3.select(this).style("fill", buttonColor); 
+			} 
+			else {
+				d3.select(this).style("fill", color)
+			};
+		});
+		
+	chart.append("text")
+		.attr("transform", "translate(" + (barWidth+30) + "," + (bN*buttonHeight+25) +")")
+		.text(label);
+		
+	bN = bN + 1;
 }
