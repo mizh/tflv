@@ -111,20 +111,7 @@ var foodFilters = [
 	"color" : "cyan"
 }];
 
-// 	
-
-// 	
-// 	newButton("dates", "date", "yellow", "#bbb");	
-// 	newButton("candied ginger", "ginger", "yellow", "#ccc");
-// 	newButton("avocado", "avocado", "yellow", "#bbb");
-// 	
-// 	newButton("tomatoes", "tomato", "yellow", "#ccc");
-// 	newButton("olives", "olive", "yellow", "#bbb");
-// 	newButton("carrots", "carrot", "yellow", "#ccc");
-// 	newButton("peas", " pea", "yellow", "#bbb");
-// 	newButton("leafy greens", "spinach|kale|cabbage|lettuce|seaweed|laver|cilantro", "yellow", "#ccc");
-
-d3.csv("tweets_clean.csv", row, function(error, data) {
+d3.csv("https://raw.githubusercontent.com/mizh/tflv/master/tweets_clean.csv", row, function(error, data) {
 	var bars = chart.selectAll("bar")
 		.data(data)
 	.enter().append("g")
