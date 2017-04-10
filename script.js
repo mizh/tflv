@@ -36,81 +36,6 @@ dayI = -1;
 nDays = 0;
 bN = 0;
 
-var foodFilters = [
-{
-	"label": "coffee",
-	"regex_string": "coffee",
-	"color" : "#0074D9"
-}, {
-	"label": "tea",
-	"regex_string": "tea",
-	"color" : "#7FDBFF"
-}, {
-	"label": "juice",
-	"regex_string": "orange juice",
-	"color" : "#39CCCC"
-}, {
-	"label": "alcohol",
-	"regex_string": "wine|beer",
-	"color" : "#3D9970"
-}, {
-	"label": "bread",
-	"regex_string": "bread|toast",
-	"color" : "#2ECC40"
-}, {
-	"label": "legumes",
-	"regex_string": "bean|lentil|chickpea|hummus",
-	"color" : "#01FF70"
-}, {
-	"label": "cereals",
-	"regex_string": "buckwheat|quinoa",
-	"color" : "#FFDC00"
-}, {
-	"label": "seeds",
-	"regex_string": "chia|hemp",
-	"color" : "#FF851B"
-}, {
-	"label": "nuts",
-	"regex_string": "almond|peanut",
-	"color" : "#FF4136"
-}, {
-	"label": "margarine",
-	"regex_string": "margarine",
-	"color" : "#85144b"
-}, {
-	"label": "oil",
-	"regex_string": "oil|evoo",
-	"color" : "#F012BE"
-}, {
-	"label": "dairy",
-	"regex_string": "cheese|cheddar|yogurt|cream|falafel",
-	"color" : "#B10DC9"
-}, {
-	"label": "fish",
-	"regex_string": "oyster|maki|tuna",
-	"color" : "#B10DC9"
-}, {
-	"label": "junk food",
-	"regex_string": "fries|chips|cookies|burger",
-	"color" : "cyan"
-}, {
-	"label": "chocolate",
-	"regex_string": "chocolate",
-	"color" : "cyan"
-}, {
-	"label": "fresh fruit",
-	"regex_string": "apple|banana|strawberr|kiwi|mango|watermelon|grapefruit|blueberr",
-	"color" : "cyan"
-}, {
-	"label": "processed fruit",
-	"regex_string": "date|ginger|jam",
-	"color" : "cyan"
-}, {
-	"label": "vegetables",
-	"regex_string": "tomato|olive|carrot|pea|spinach|kale|cabbage|lettuce|seaweed|laver|cilantro",
-	"color" : "cyan"
-}];
-
 d3.csv("https://raw.githubusercontent.com/mizh/tflv/master/tweets_clean.csv", row, function(error, data) {
 	var bars = chart.selectAll("bar")
 		.data(data)
@@ -165,12 +90,87 @@ d3.csv("https://raw.githubusercontent.com/mizh/tflv/master/tweets_clean.csv", ro
 		});
 	
 	foodFilters.forEach(function(d, i) {
-		if (i%2 == 0) {buttonColor = "#bbb"}
-		else {buttonColor = "#ccc"};
+		if (i%2 == 0) {buttonColor = "#555"}
+		else {buttonColor = "#666"};
 		newButton(d.label, d.regex_string, d.color, buttonColor)
 	});
 
 });
+
+var foodFilters = [
+{
+	"label": "coffee",
+	"regex_string": "coffee",
+	"color" : "#0074D9"
+}, {
+	"label": "tea",
+	"regex_string": "tea",
+	"color" : "blue"
+}, {
+	"label": "juice",
+	"regex_string": "orange juice",
+	"color" : "blueviolet"
+}, {
+	"label": "alcohol",
+	"regex_string": "wine|beer",
+	"color" : "darkgoldenrod"
+}, {
+	"label": "bread",
+	"regex_string": "bread|toast",
+	"color" : "#2ECC40"
+}, {
+	"label": "legumes",
+	"regex_string": "bean|lentil|chickpea|hummus",
+	"color" : "cadetblue"
+}, {
+	"label": "cereals",
+	"regex_string": "buckwheat|quinoa",
+	"color" : "chocolate"
+}, {
+	"label": "seeds",
+	"regex_string": "chia|hemp",
+	"color" : "crimson"
+}, {
+	"label": "nuts",
+	"regex_string": "almond|peanut",
+	"color" : "#FF4136"
+}, {
+	"label": "margarine",
+	"regex_string": "margarine",
+	"color" : "#85144b"
+}, {
+	"label": "oil",
+	"regex_string": "oil|evoo",
+	"color" : "#F012BE"
+}, {
+	"label": "dairy",
+	"regex_string": "cheese|cheddar|yogurt|cream|falafel",
+	"color" : "#B10DC9"
+}, {
+	"label": "fish",
+	"regex_string": "oyster|maki|tuna",
+	"color" : "darkcyan"
+}, {
+	"label": "junk food",
+	"regex_string": "fries|chips|cookies|burger",
+	"color" : "darkgreen"
+}, {
+	"label": "chocolate",
+	"regex_string": "chocolate",
+	"color" : "darkmagenta"
+}, {
+	"label": "fresh fruit",
+	"regex_string": "apple|banana|strawberr|kiwi|mango|watermelon|grapefruit|blueberr",
+	"color" : "darkorange"
+}, {
+	"label": "processed fruit",
+	"regex_string": "date|ginger|jam",
+	"color" : "darkorchid"
+}, {
+	"label": "vegetables",
+	"regex_string": "tomato|olive|carrot|pea|spinach|kale|cabbage|lettuce|seaweed|laver|cilantro",
+	"color" : "darkred"
+}];
 
 var parseDate = d3.timeParse("%Y-%m-%d %H:%M:%S %Z"),
 	second = d3.timeFormat("%S")
@@ -271,7 +271,8 @@ function newButton(label, regex_string, color, buttonColor) {
 		
 	chart.append("text")
 		.attr("transform", "translate(" + (barWidth+30) + "," + (bN*buttonHeight+25) +")")
-		.text(label);
+		.text(label)
+		.style("fill","white");
 		
 	bN = bN + 1;
 }
