@@ -30,10 +30,99 @@ var tip = d3.tip()
 	.html(function(d) { return d; });
 chart.call(tip);
 
+
 var currDay = +"00000000",
 dayI = -1;
 nDays = 0;
 bN = 0;
+
+var foodFilters = [
+{
+	"label": "coffee",
+	"regex_string": "coffee",
+	"color" : "#0074D9"
+}, {
+	"label": "tea",
+	"regex_string": "tea",
+	"color" : "#7FDBFF"
+}, {
+	"label": "juice",
+	"regex_string": "orange juice",
+	"color" : "#39CCCC"
+}, {
+	"label": "alcohol",
+	"regex_string": "wine|beer",
+	"color" : "#3D9970"
+}, {
+	"label": "bread",
+	"regex_string": "bread|toast",
+	"color" : "#2ECC40"
+}, {
+	"label": "legumes",
+	"regex_string": "bean|lentil|chickpea|hummus",
+	"color" : "#01FF70"
+}, {
+	"label": "cereals",
+	"regex_string": "buckwheat|quinoa",
+	"color" : "#FFDC00"
+}, {
+	"label": "seeds",
+	"regex_string": "chia|hemp",
+	"color" : "#FF851B"
+}, {
+	"label": "nuts",
+	"regex_string": "almond|peanut",
+	"color" : "#FF4136"
+}, {
+	"label": "margarine",
+	"regex_string": "margarine",
+	"color" : "#85144b"
+}, {
+	"label": "oil",
+	"regex_string": "oil|evoo",
+	"color" : "#F012BE"
+}, {
+	"label": "dairy",
+	"regex_string": "cheese|cheddar|yogurt|cream|falafel",
+	"color" : "#B10DC9"
+}, {
+	"label": "fish",
+	"regex_string": "oyster|maki|tuna",
+	"color" : "#B10DC9"
+}, {
+	"label": "junk food",
+	"regex_string": "fries|chips|cookies|burger",
+	"color" : "cyan"
+}, {
+	"label": "chocolate",
+	"regex_string": "chocolate",
+	"color" : "cyan"
+}, {
+	"label": "fresh fruit",
+	"regex_string": "apple|banana|strawberr|kiwi|mango|watermelon|grapefruit|blueberr",
+	"color" : "cyan"
+}, {
+	"label": "processed fruit",
+	"regex_string": "date|ginger|jam",
+	"color" : "cyan"
+}, {
+	"label": "vegetables",
+	"regex_string": "tomato|olive|carrot|pea|spinach|kale|cabbage|lettuce|seaweed|laver|cilantro",
+	"color" : "cyan"
+}];
+
+// 	
+
+// 	
+// 	newButton("dates", "date", "yellow", "#bbb");	
+// 	newButton("candied ginger", "ginger", "yellow", "#ccc");
+// 	newButton("avocado", "avocado", "yellow", "#bbb");
+// 	
+// 	newButton("tomatoes", "tomato", "yellow", "#ccc");
+// 	newButton("olives", "olive", "yellow", "#bbb");
+// 	newButton("carrots", "carrot", "yellow", "#ccc");
+// 	newButton("peas", " pea", "yellow", "#bbb");
+// 	newButton("leafy greens", "spinach|kale|cabbage|lettuce|seaweed|laver|cilantro", "yellow", "#ccc");
 
 d3.csv("tweets_clean.csv", row, function(error, data) {
 	var bars = chart.selectAll("bar")
@@ -80,7 +169,6 @@ d3.csv("tweets_clean.csv", row, function(error, data) {
 		.attr("cx", function(d) { return t(d.moment); })
 		.attr("cy", function(d, i) { if (i%2 == 0) { return barHeight/2 + dotOffset } else { return barHeight/2 - dotOffset }; })
 		.attr("r", dotRadius)
-		//.style("fill", function(d) { return foodColor(d.text); })
 		.style("fill", "black")
 		.on("mouseover", function(d) {
 			tip.show(wrap(d.text, 40, "<br>", false));
@@ -88,55 +176,12 @@ d3.csv("tweets_clean.csv", row, function(error, data) {
 		.on("mouseout", function(d) {
 			tip.hide(d.text);
 		});
-		
-	newButton("coffee", "coffee", "yellow", "#bbb");
-	newButton("tea", "tea", "chartreuse", "#ccc");
-	newButton("juice", "orange juice", "cyan", "#bbb");
-	newButton("alcohol", "wine|beer", "yellow", "#ccc");
 	
-	newButton("bread", "bread|toast", "yellow", "#bbb");
-	newButton("beans", "bean|chickpea", "yellow", "#ccc");
-	newButton("lentils", "lentil", "yellow", "#bbb");
-	newButton("quinoa", "quinoa", "yellow", "#ccc");
-	
-	
-	newButton("margarine", "margarine", "yellow", "#bbb");
-	newButton("peanut butter", "peanut butter", "yellow", "#ccc");
-	newButton("jam", "jam", "yellow", "#bbb");
-	newButton("hummus", "hummus", "yellow", "#ccc");
-	
-	newButton("cheese", "cheese|cheddar", "yellow", "#bbb");
-	newButton("yogurt", "yogurt", "yellow", "#ccc");
-	newButton("cream", "cream|half&half", "yellow", "#bbb");
-	
-	newButton("buckwheat", "buckwheat", "yellow", "#ccc");
-	newButton("chia seeds", "chia", "yellow", "#bbb");
-	newButton("hemp hearts", "chia", "yellow", "#ccc");
-	newButton("almonds", "almond", "yellow", "#bbb");
-	newButton("chocolate", "chocolate", "yellow", "#ccc");
-	newButton("fries", "fries", "yellow", "#bbb");
-	newButton("chips", "chip", "yellow", "#ccc");
-	newButton("cookies", "cookie", "yellow", "#bbb");
-	
-	newButton("apples", "apple", "yellow", "#ccc");
-	newButton("bananas", "banana", "yellow", "#bbb");
-	newButton("strawberries", "strawberr", "yellow", "#ccc");
-	newButton("kiwifruit", "kiwi", "yellow", "#bbb");
-	newButton("mango", "mango", "yellow", "#ccc");
-	newButton("watermelon", "watermelon", "yellow", "#bbb");
-	newButton("grapefruit", "grapefruit", "yellow", "#ccc");	
-	
-	newButton("dates", "date", "yellow", "#bbb");	
-	newButton("candied ginger", "ginger", "yellow", "#ccc");
-	newButton("avocado", "avocado", "yellow", "#bbb");
-	
-	newButton("tomatoes", "tomato", "yellow", "#ccc");
-	newButton("olives", "olive", "yellow", "#bbb");
-	newButton("carrots", "carrot", "yellow", "#ccc");
-	newButton("peas", " pea", "yellow", "#bbb");
-	newButton("leafy greens", "spinach|kale|cabbage|lettuce|seaweed|laver|cilantro", "yellow", "#ccc");
-	
-	
+	foodFilters.forEach(function(d, i) {
+		if (i%2 == 0) {buttonColor = "#bbb"}
+		else {buttonColor = "#ccc"};
+		newButton(d.label, d.regex_string, d.color, buttonColor)
+	});
 
 });
 

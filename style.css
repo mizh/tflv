@@ -5,7 +5,7 @@ body {
 
 div.chart {
   font: 10px sans-serif;
-  background-color: steelblue;
+  background-color: #eee;
   text-align: right;
   padding: 3px;
   margin: 1px;
@@ -13,7 +13,7 @@ div.chart {
 }
 
 .chart rect {
-	fill: steelblue;
+	fill: #bbb;
 } 
 
 .chart line {
@@ -70,4 +70,5 @@ div.chart {
       top: 100%;
       left: 0;
 }
+
 
