@@ -1,23 +1,21 @@
 body {
-    background-color: #eee;
-    font-size: 48px;
+    background-color: #f9f9f9;
+    font-size: 20px;
 }
 
-div.chart {
-  font: 10px sans-serif;
-  background-color: #eee;
-  text-align: right;
-  padding: 3px;
-  margin: 1px;
-  color: white;
+h1 {
+	text-indent: 50px;
+	margin-top: 50px;
 }
 
-.chart rect {
-	fill: #bbb;
-} 
+p {
+	text-indent: 50px;
+	margin-left: 50px;
+	width: 1000px;
+}
 
 .chart line {
-  stroke: #d7d7d7;
+  stroke: #eee;
   stroke-width: 26;
   shape-rendering: geometricPrecision;
 }
@@ -25,23 +23,19 @@ div.chart {
 .chart text {
   fill: black;
   font: 16px sans-serif;
-  text-anchor: center;
 }
 
-
 .axis text {
-  fill: #black;
+  fill: black;
   font: 13px sans-serif;
 }
 
 .axis path,
 .axis line {
-  fill: none;
   stroke: #bbb;
   stroke-width: 1;
   shape-rendering: geometricPrecision;
 }
-
 
 .d3-tip {
       line-height: 1;
@@ -64,7 +58,7 @@ div.chart {
       position: absolute;
       text-align: center;
 }
-    
+
 .d3-tip.n:after {
       margin: -2px 0 0 0;
       top: 100%;

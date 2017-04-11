@@ -1,3 +1,5 @@
+// Define basic dimensional chart variables:
+
 var margin = {top:60, bottom:60, left:320, right: 100};
 
 var width = 1600 - margin.right - margin.left,
@@ -12,6 +14,8 @@ var width = 1600 - margin.right - margin.left,
 var chart = d3.select(".chart")
 	.attr("width", width + margin.right + margin.left);
 
+// Initialize time axes: 
+
 var t = d3.scaleTime()
 	.domain([new Date(1999,12,31,0,0,0), new Date(1999,12,31,23,59,59)])
 	.range([0, barWidth]);
@@ -23,20 +27,29 @@ var mainAxis = d3.axisTop(t)
 var bonusAxis = d3.axisTop(t)
 	.ticks(d3.timeHour.every(2))
 	.tickFormat(d3.timeFormat("%H:%M"));
-	
+
+// Enable tooltips using d3-tip: 
+
 var tip = d3.tip()
 	.attr("class", "d3-tip")
 	.offset([-8, 0])
 	.html(function(d) { return d; });
 chart.call(tip);
 
+// Initialize variables that will be modified by functions later: 
 
 var currDay = +"00000000",
-dayI = -1;
+dayIndex = -1;
 nDays = 0;
-bN = 0;
+buttonIndex = 0;
+filts = [];
+colors = [];
 
+// Read the data file: 
 d3.csv("https://raw.githubusercontent.com/mizh/tflv/master/tweets_clean.csv", row, function(error, data) {
+	
+	// Draw a thick line for every day in the dataset: 
+	
 	var bars = chart.selectAll("bar")
 		.data(data)
 	.enter().append("g")
@@ -58,19 +71,26 @@ d3.csv("https://raw.githubusercontent.com/mizh/tflv/master/tweets_clean.csv", ro
 		
 	chart.attr("height", barHeight * nDays + margin.top + margin.bottom) 
 		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-		
+	
+	// Draw a time axis with ticks the height of the chart: 
+	
 	mainAxis.tickSizeInner(-barHeight * nDays);
 	chart.append("g")
 		.attr("class", "axis")
 		.call(mainAxis);
-		
+	
+	// Draw more time axes (without ticks) for easy interpretation: 
+	
 	var bonusAxes = chart.selectAll("axes")
 		.data(data)
 	.enter().append("g")
 		.attr("class", "axis")
 		.attr("transform", function(d, i) { return "translate(0," + (i+1)*7 * barHeight + ")"; })
 		.call(bonusAxis);
-				      
+	
+	// Draw a dot for each tweet
+	// that shows the text of the tweet on mouseover: 
+	
 	var dots = chart.selectAll("dot")
 		.data(data)
 	.enter().append("g");
@@ -89,13 +109,18 @@ d3.csv("https://raw.githubusercontent.com/mizh/tflv/master/tweets_clean.csv", ro
 			tip.hide(d.text);
 		});
 	
-	foodFilters.forEach(function(d, i) {
+	// Add buttons that highlight all dots associated with a specified food group: 
+	
+	foodFilters.forEach(function(f, i) {
 		if (i%2 == 0) {buttonColor = "#555"}
 		else {buttonColor = "#666"};
-		newButton(d.label, d.regex_string, d.color, buttonColor)
+		newButton(f.label, f.regex_string, f.color, buttonColor);
 	});
-
+	
 });
+
+// Here is the object that specifies food groups of interest 
+// and the colors we want to associate with them: 
 
 var foodFilters = [
 {
@@ -124,7 +149,7 @@ var foodFilters = [
 	"color" : "cadetblue"
 }, {
 	"label": "cereals",
-	"regex_string": "buckwheat|quinoa",
+	"regex_string": "buckwheat|quinoa|barley",
 	"color" : "chocolate"
 }, {
 	"label": "seeds",
@@ -160,7 +185,7 @@ var foodFilters = [
 	"color" : "darkmagenta"
 }, {
 	"label": "fresh fruit",
-	"regex_string": "apple|banana|strawberr|kiwi|mango|watermelon|grapefruit|blueberr",
+	"regex_string": "apple|banana|strawberr|kiwi|mango|watermelon|grapefruit|blueberr|avocado|fruit",
 	"color" : "darkorange"
 }, {
 	"label": "processed fruit",
@@ -168,9 +193,11 @@ var foodFilters = [
 	"color" : "darkorchid"
 }, {
 	"label": "vegetables",
-	"regex_string": "tomato|olive|carrot|pea|spinach|kale|cabbage|lettuce|seaweed|laver|cilantro",
+	"regex_string": "tomato|olive|carrot|pea |spinach|kale|cabbage|lettuce|seaweed|laver|cilantro|eggplant|veg|mushroom|radish|potato",
 	"color" : "darkred"
 }];
+
+// Date and time calculations and parsing: 
 
 var parseDate = d3.timeParse("%Y-%m-%d %H:%M:%S %Z"),
 	second = d3.timeFormat("%S")
@@ -181,6 +208,9 @@ var parseDate = d3.timeParse("%Y-%m-%d %H:%M:%S %Z"),
 	formatYear = d3.timeFormat("%Y");
 
 function row(d) {
+
+// Pre-process data rows
+
 	return {
 		moment: new Date(1999,12,31,+hour(parseDate(d.timestamp)),+minute(parseDate(d.timestamp)),+second(parseDate(d.timestamp))),
 		day: +formatDay(parseDate(d.timestamp)),
@@ -191,6 +221,9 @@ function row(d) {
 }
 
 function newDay(day) {
+
+// Determine if the current day is a new day 
+
 	if (day != currDay) {
 		currDay = day;
 		nDays = nDays + 1;
@@ -199,14 +232,20 @@ function newDay(day) {
 }
 
 function newDayIndex(day) {
+
+// Calculate the index of the current day
+
 	if (day != currDay) {
 		currDay = day;
-		dayI = dayI + 1;
-		return dayI }
-	else { return dayI };
+		dayIndex = dayIndex + 1;
+		return dayIndex }
+	else { return dayIndex };
 }
 
 function cleanText(text) {
+
+// Remove URLs from tweet text
+
 	var find = 'http(.*)';
 	var re = new RegExp(find, 'g');
 	text = text.replace(re, '');
@@ -215,6 +254,9 @@ function cleanText(text) {
 }
 
 function wrap( str, width, brk, cut ) {
+
+// Word wrap for the d3-tip tooltips
+
 	brk = brk || 'n';
 	width = width || 75;
 	cut = cut || false;
@@ -224,25 +266,53 @@ function wrap( str, width, brk, cut ) {
 }
 
 function highlight(d, str, color) {
+
+// Highlight dots associated with the food group specified in str
+
 	re = new RegExp(str, "i");
 	d3.selectAll(".dot")
 		.filter(function(d) { return d.text.match(re); })
 		.style("fill",color)
 		.attr("r", bigDotRadius);
+	filts.push(str);
+	colors.push(color);
 }
 
 function unhighlight(d, str) {
+
+// Unhighlight dots associated with the food group specified in str
+// while preserving highlights on previously selected dots
+
 	re = new RegExp(str, "i");
+	
+	var index = filts.indexOf(str);
+	if (index > -1){
+		filts.splice(index, 1);
+		colors.splice(index, 1);
+	};
+	
 	d3.selectAll(".dot")
 		.filter(function(d) { return d.text.match(re); })
 		.style("fill","black")
 		.attr("r", dotRadius);
+	
+	filts.forEach( function(f, i) {
+		re = new RegExp(f, "i");
+		color = colors[i];
+		d3.selectAll(".dot")
+			.filter(function(d) { return d.text.match(re); })
+			.style("fill",color)
+			.attr("r", bigDotRadius);
+	});
 }
 
 function newButton(label, regex_string, color, buttonColor) {
+
+// Create a button that highlights all dots associated with a food group
+
 	chart.append("rect")
 		.datum(false)
-		.attr("transform", "translate(" + (barWidth+20) + "," + (bN*buttonHeight) +")")
+		.attr("transform", "translate(" + (barWidth+20) + "," + (buttonIndex*buttonHeight) +")")
 		.attr("width", buttonWidth)
 		.attr("height", buttonHeight)
 		.attr("rx",6)
@@ -270,9 +340,10 @@ function newButton(label, regex_string, color, buttonColor) {
 		});
 		
 	chart.append("text")
-		.attr("transform", "translate(" + (barWidth+30) + "," + (bN*buttonHeight+25) +")")
+		.attr("transform", "translate(" + (barWidth+30) + "," + (buttonIndex*buttonHeight+25) +")")
 		.text(label)
-		.style("fill","white");
+		.style("fill","white")
+		.style("pointer-events","none");
 		
-	bN = bN + 1;
+	buttonIndex = buttonIndex + 1;
 }
