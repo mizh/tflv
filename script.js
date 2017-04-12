@@ -112,8 +112,8 @@ d3.csv("https://raw.githubusercontent.com/mizh/tflv/master/tweets_clean.csv", ro
 	// Add buttons that highlight all dots associated with a specified food group: 
 	
 	foodFilters.forEach(function(f, i) {
-		if (i%2 == 0) {buttonColor = "#555"}
-		else {buttonColor = "#666"};
+		if (i%2 == 0) {buttonColor = "#ccc"}
+		else {buttonColor = "#ddd"};
 		newButton(f.label, f.regex_string, f.color, buttonColor);
 	});
 	
@@ -126,75 +126,75 @@ var foodFilters = [
 {
 	"label": "coffee",
 	"regex_string": "coffee",
-	"color" : "#0074D9"
+	"color" : "#ff8080" 
 }, {
 	"label": "tea",
-	"regex_string": "tea",
-	"color" : "blue"
+	"regex_string": " tea ",
+	"color" : "#fff780" 
 }, {
 	"label": "juice",
 	"regex_string": "orange juice",
-	"color" : "blueviolet"
+	"color" : "#40ffa6" 
 }, {
 	"label": "alcohol",
-	"regex_string": "wine|beer",
-	"color" : "darkgoldenrod"
+	"regex_string": " wine |beer",
+	"color" : "#bfe1ff" 
 }, {
 	"label": "bread",
-	"regex_string": "bread|toast",
-	"color" : "#2ECC40"
+	"regex_string": "bread|toast|burger|sandwich",
+	"color" : "	#ff80e5" 
 }, {
 	"label": "legumes",
-	"regex_string": "bean|lentil|chickpea|hummus|falafel",
-	"color" : "cadetblue"
+	"regex_string": "beans|lentil|chickpea|hummus|falafel",
+	"color" : "#ff2200" 
 }, {
 	"label": "cereals",
 	"regex_string": "buckwheat|quinoa|barley",
-	"color" : "chocolate"
+	"color" : "#66ff00" 
 }, {
 	"label": "seeds",
-	"regex_string": "chia|hemp",
-	"color" : "crimson"
+	"regex_string": "chia|hemp|date squares|date bars",
+	"color" : "#40fff2"
 }, {
 	"label": "nuts",
-	"regex_string": "almond|peanut",
-	"color" : "#FF4136"
+	"regex_string": "almond|peanut|date squares|date bars",
+	"color" : "#8091ff" 
 }, {
 	"label": "margarine",
 	"regex_string": "margarine",
-	"color" : "#85144b"
+	"color" : "#ff408c" 
 }, {
 	"label": "oil",
 	"regex_string": "oil|evoo",
-	"color" : "#F012BE"
+	"color" : "#ffd0bf" 
 }, {
 	"label": "dairy",
-	"regex_string": "cheese|cheddar|yogurt|cream",
-	"color" : "#B10DC9"
+	"regex_string": "cheese|cheddar|yogurt|with cream|\\+ cream|half&half",
+	"color" : "#40d9ff" 
 }, {
 	"label": "fish",
 	"regex_string": "oyster|maki|tuna",
-	"color" : "darkcyan"
+	"color" : "#5940ff"
 }, {
 	"label": "junk food",
 	"regex_string": "fries|chips|cookies|burger",
-	"color" : "darkgreen"
+	"color" : "#ffbfd9"
 }, {
 	"label": "chocolate",
 	"regex_string": "chocolate",
-	"color" : "darkmagenta"
+	"color" : "#ffa640"
 }, {
 	"label": "fresh fruit",
-	"regex_string": "apple|banana|strawberr|kiwi|mango|watermelon|grapefruit|blueberr|avocado|fruit",
-	"color" : "darkorange"
-}, {
-	"label": "processed fruit",
-	"regex_string": "date|ginger|jam",
-	"color" : "darkorchid"
+	"regex_string": "apple|banana|strawberr|kiwi|mango|watermelon|grapefruit|blueberr|avocado",
+	"color" : "#bfffc8"
 }, {
 	"label": "vegetables",
-	"regex_string": "tomato|olive|carrot|pea |spinach|kale|cabbage|lettuce|seaweed|laver|cilantro|eggplant|veg|mushroom|radish|potato",
-	"color" : "darkred"
+	"regex_string": "tomato|olives|carrot|pea |peas |spinach|kale|cabbage|lettuce|seaweed|laver|cilantro|eggplant|veg|mushroom|radish|potato",
+	"color" : "#00aaff"
+}, {
+	"label": "sugary fruit & veg",
+	"regex_string": "date|crystallized ginger",
+	"color" : "#ee00ff"
 }];
 
 // Date and time calculations and parsing: 
@@ -272,6 +272,7 @@ function highlight(d, str, color) {
 	re = new RegExp(str, "i");
 	d3.selectAll(".dot")
 		.filter(function(d) { return d.text.match(re); })
+		.style("stroke","black")
 		.style("fill",color)
 		.attr("r", bigDotRadius);
 	filts.push(str);
@@ -342,7 +343,6 @@ function newButton(label, regex_string, color, buttonColor) {
 	chart.append("text")
 		.attr("transform", "translate(" + (barWidth+30) + "," + (buttonIndex*buttonHeight+25) +")")
 		.text(label)
-		.style("fill","white")
 		.style("pointer-events","none");
 		
 	buttonIndex = buttonIndex + 1;
