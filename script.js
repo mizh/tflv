@@ -145,7 +145,7 @@ var foodFilters = [
 	"color" : "#2ECC40"
 }, {
 	"label": "legumes",
-	"regex_string": "bean|lentil|chickpea|hummus",
+	"regex_string": "bean|lentil|chickpea|hummus|falafel",
 	"color" : "cadetblue"
 }, {
 	"label": "cereals",
@@ -169,7 +169,7 @@ var foodFilters = [
 	"color" : "#F012BE"
 }, {
 	"label": "dairy",
-	"regex_string": "cheese|cheddar|yogurt|cream|falafel",
+	"regex_string": "cheese|cheddar|yogurt|cream",
 	"color" : "#B10DC9"
 }, {
 	"label": "fish",
